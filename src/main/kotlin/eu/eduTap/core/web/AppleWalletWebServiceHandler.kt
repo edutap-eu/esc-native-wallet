@@ -1,8 +1,7 @@
-package eu.eduTap.core.web.apple
+package eu.eduTap.core.web
 
-import eu.eduTap.core.storage.apple.ApplePassStorageHandler
 import eu.eduTap.core.card.apple.AppleWalletHandler
-import eu.eduTap.core.web.PlatformSpecificWebHandler
+import eu.eduTap.core.storage.apple.ApplePassStorageHandler
 
 class AppleWalletWebServiceHandler(
   private val walletHandler: AppleWalletHandler,

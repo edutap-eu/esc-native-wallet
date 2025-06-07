@@ -12,6 +12,7 @@ import de.brendamour.jpasskit.signing.PKSigningInformationUtil
 import eu.eduTap.core.Card
 import eu.eduTap.core.EuStudentCard
 import eu.eduTap.core.card.PlatformSpecificCardHandler
+import eu.eduTap.core.util.scalePng
 import java.awt.Color
 import java.io.ByteArrayInputStream
 import java.nio.charset.Charset

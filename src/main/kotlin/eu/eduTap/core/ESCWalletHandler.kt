@@ -3,7 +3,7 @@ package eu.eduTap.core
 import eu.eduTap.core.card.apple.AppleWalletHandler
 import eu.eduTap.core.push.apple.APNHandler
 import eu.eduTap.core.storage.apple.ApplePassStorageHandler
-import eu.eduTap.core.web.apple.AppleWalletWebServiceHandler
+import eu.eduTap.core.web.AppleWalletWebServiceHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
