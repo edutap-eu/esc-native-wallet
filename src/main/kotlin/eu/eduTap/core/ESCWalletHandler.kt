@@ -1,6 +1,7 @@
 package eu.eduTap.core
 
 import eu.eduTap.core.card.apple.AppleWalletHandler
+import eu.eduTap.core.card.google.GoogleWalletHandler
 import eu.eduTap.core.push.apple.APNHandler
 import eu.eduTap.core.storage.apple.ApplePassStorageHandler
 import eu.eduTap.core.web.AppleWalletWebServiceHandler
@@ -10,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 /**
  * Currently supports:
  * - Apple Wallet ([eu.eduTap.core.card.apple.AppleWalletConfig])
- * - Google Wallet ([WalletHandlerConfig.GoogleWalletConfig])
+ * - Google Wallet ([eu.eduTap.core.card.google.GoogleWalletConfig])
  */
 open class ESCWalletHandler(val config: WalletHandlerConfig) {
   private val appleWalletHandler by lazy {
@@ -24,6 +25,11 @@ open class ESCWalletHandler(val config: WalletHandlerConfig) {
     } else null
   }
 
+  private val googleWalletHandler: GoogleWalletHandler by lazy {
+    require(config.googleWalletConfig != null) { "Google Wallet is not configured." }
+    GoogleWalletHandler(config.googleWalletConfig)
+  }
+
   open fun getAppleWalletPass(studentCard: EuStudentCard): ByteArray = appleWalletHandler.generateSignedPass(studentCard)
 
   fun getAppleWalletWebServiceHandler(storageHandler: ApplePassStorageHandler): AppleWalletWebServiceHandler {
@@ -32,6 +38,8 @@ open class ESCWalletHandler(val config: WalletHandlerConfig) {
 
     return AppleWalletWebServiceHandler(appleWalletHandler, storageHandler)
   }
+
+  open fun getGoogleWalletPassJwt(studentCard: EuStudentCard): String = googleWalletHandler.getSignedJWTPass(studentCard)
 
   suspend fun notifyAllCardHolders(card: Card) {
     appleWalletPushHandler?.notifyAllCardHolders(card)
