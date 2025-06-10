@@ -37,6 +37,8 @@ interface EuStudentCard : Card {
    */
   val esi: String
 
+  val dateOfBirth: String?
+
   /**
    * This map is put on "the back side" of the card.
    */

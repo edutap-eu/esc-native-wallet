@@ -32,7 +32,7 @@ class GoogleWalletHandler(val config: GoogleWalletConfig) : PlatformSpecificCard
     .sign(Algorithm.RSA256(null, googleCredentials.privateKey as RSAPrivateKey))
 
   private fun createPassObjectJson(card: EuStudentCard) = mapOf(
-    "id" to "$fullClassId.${card.escn}",
+    "id" to "$fullClassId.${card.googleWalletObjectId}",
     "type" to "GENERIC_PRIVATE_PASS_TYPE_UNSPECIFIED",
     "header" to LocalizedString(en = "European Student Card", de = "Europäische Studentenausweis").toTranslatedString(),
     "hexBackgroundColor" to "#1A438F",
@@ -46,17 +46,31 @@ class GoogleWalletHandler(val config: GoogleWalletConfig) : PlatformSpecificCard
         header = LocalizedString(en = "University", de = "Hochschule").toTranslatedString(),
         body = card.issuerHEIName
       ),
-      createTextModule(
-        id = "row2right",
-        header = LocalizedString(en = "ESI Number").toTranslatedString(),
-        body = card.esi
-      ),
+      when {
+        card.dateOfBirth != null -> createTextModule(
+          id = "row2right",
+          header = LocalizedString(en = "Date of birth", de = "Geburtsdatum").toTranslatedString(),
+          body = card.dateOfBirth!!
+        )
+
+        else -> createTextModule(
+          id = "row2right",
+          header = LocalizedString(en = "ESI number").toTranslatedString(),
+          body = card.esi
+        )
+      },
       createTextModule(
         id = "row3right",
         header = LocalizedString(en = "Valid until").toTranslatedString(),
         body = card.expiresAt
       ),
-    ),
+    ).plus(card.additionalFields.map { (label, value) ->
+      createTextModule(
+        id = label.lowercase(),
+        header = LocalizedString(universalString = label).toTranslatedString(),
+        body = value
+      )
+    }),
     "barcode" to mapOf(
       "type" to "QR_CODE", "value" to generateQRCode(card),
     ),

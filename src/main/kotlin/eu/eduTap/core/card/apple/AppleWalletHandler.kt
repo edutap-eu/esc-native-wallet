@@ -63,17 +63,19 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
           .secondaryFields(
             listOf(
               pkField("university", "University", studentCard.issuerHEIName),
-              pkField("expiryDate", "Expiry date", studentCard.expiresAt),
             )
           )
           .auxiliaryFields(
             listOf(
-              pkField("studyProgram", "Studienrichtung", "BA Computer Science"), // TODO @Z Add extra fields???
+              pkField("expiryDate", "Valid until", studentCard.expiresAt),
+              when {
+                studentCard.dateOfBirth != null -> pkField("dateOfBirth", "Date of birth", studentCard.dateOfBirth!!)
+                else -> pkField("esi", "ESI number", studentCard.esi)
+              }
             )
           )
           .backFields(
             listOfNotNull(
-              pkField("studentCardType", "Card type", "European Student Card"),
               pkField("escn", "ESCN", studentCard.escn),
               pkField("esi", "ESI", studentCard.esi),
               pkField("issuedAt", "Issued at", studentCard.issuedAt),
