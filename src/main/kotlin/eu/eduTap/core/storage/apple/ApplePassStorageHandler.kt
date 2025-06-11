@@ -40,7 +40,7 @@ interface ApplePassStorageHandler : PlatformSpecificStorageHandler {
 
   fun unregisterPassToDevice(
     passTypeIdentifier: String,
-    serialNumber: String? = null, // If null, unregister all passes with passTypeIdentifier for device
+    serialNumber: String? = null, // If null, unregister all passes with passTypeIdentifier for a device
     deviceLibraryId: String,
   )
 

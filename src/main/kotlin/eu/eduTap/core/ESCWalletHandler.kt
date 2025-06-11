@@ -14,7 +14,7 @@ import kotlinx.coroutines.runBlocking
  * - Google Wallet ([eu.eduTap.core.card.google.GoogleWalletConfig])
  */
 open class ESCWalletHandler(val config: WalletHandlerConfig) {
-  private val appleWalletHandler by lazy {
+  private val appleWalletHandler: AppleWalletHandler by lazy {
     require(config.appleWalletConfig != null) { "Apple Wallet is not configured." }
     AppleWalletHandler(config.appleWalletConfig)
   }

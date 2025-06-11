@@ -78,7 +78,6 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
             listOfNotNull(
               pkField("escn", "ESCN", studentCard.escn),
               pkField("esi", "ESI", studentCard.esi),
-              pkField("issuedAt", "Issued at", studentCard.issuedAt),
             ).plus(studentCard.additionalFields.map { pkField(it.key.lowercase(), it.key, it.value) })
           )
       )

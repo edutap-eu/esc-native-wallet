@@ -31,7 +31,7 @@ class GoogleWalletHandler(val config: GoogleWalletConfig) : PlatformSpecificCard
     .withExpiresAt(SimpleDateFormat("yyyy-MM-dd").parse(card.expiresAt))
     .sign(Algorithm.RSA256(null, googleCredentials.privateKey as RSAPrivateKey))
 
-  private fun createPassObjectJson(card: EuStudentCard) = mapOf(
+  private fun createPassObjectJson(card: EuStudentCard): Map<String, Any> = mapOf(
     "id" to "$fullClassId.${card.googleWalletObjectId}",
     "type" to "GENERIC_PRIVATE_PASS_TYPE_UNSPECIFIED",
     "header" to LocalizedString(en = "European Student Card", de = "Europäische Studentenausweis").toTranslatedString(),

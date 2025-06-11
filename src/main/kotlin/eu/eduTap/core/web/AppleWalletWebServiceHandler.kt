@@ -152,9 +152,4 @@ class AppleWalletWebServiceHandler(
       }
     }
   }
-
-
-  private fun sendAPNNotification() {
-    TODO()
-  }
 }
