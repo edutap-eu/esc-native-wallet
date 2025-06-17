@@ -5,6 +5,7 @@ import eu.eduTap.core.card.google.GoogleWalletHandler
 import eu.eduTap.core.push.apple.APNHandler
 import eu.eduTap.core.storage.apple.ApplePassStorageHandler
 import eu.eduTap.core.web.AppleWalletWebServiceHandler
+import eu.eduTap.core.web.GoogleWalletWebServiceHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
@@ -37,6 +38,11 @@ open class ESCWalletHandler(val config: WalletHandlerConfig) {
     require(config.appleWalletConfig.webServiceConfig != null) { "Apple Wallet web service is not configured." }
 
     return AppleWalletWebServiceHandler(appleWalletHandler, storageHandler)
+  }
+
+  fun getGoogleWalletWebServiceHandler(): GoogleWalletWebServiceHandler {
+    require(config.googleWalletConfig != null) { "Google Wallet is not configured." }
+    return GoogleWalletWebServiceHandler(googleWalletHandler)
   }
 
   open fun getGoogleWalletPassJwt(studentCard: EuStudentCard): String = googleWalletHandler.getSignedJWTPass(studentCard)

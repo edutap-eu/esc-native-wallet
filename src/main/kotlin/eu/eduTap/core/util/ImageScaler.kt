@@ -30,6 +30,10 @@ internal fun scalePng(
   /* 1 ▏Load source + dimensions                                          */
   /*───────────────────────────────────────────────────────────────────────*/
   val original: BufferedImage = ImageIO.read(originalStream)
+
+  // Reset the stream position so it can be reused
+  originalStream.reset() // TODO Zoli will check?
+
   val origW = original.width
   val origH = original.height
 
