@@ -33,6 +33,8 @@ open class ESCWalletHandler(val config: WalletHandlerConfig) {
 
   open fun getAppleWalletPass(studentCard: EuStudentCard): ByteArray = appleWalletHandler.generateSignedPass(studentCard)
 
+  fun getAppleWalletPassResponse(studentCard: EuStudentCard) = appleWalletHandler.generateSignedPassHttpResponse(studentCard)
+
   fun getAppleWalletWebServiceHandler(storageHandler: ApplePassStorageHandler): AppleWalletWebServiceHandler {
     require(config.appleWalletConfig != null) { "Apple Wallet is not configured." }
     require(config.appleWalletConfig.webServiceConfig != null) { "Apple Wallet web service is not configured." }

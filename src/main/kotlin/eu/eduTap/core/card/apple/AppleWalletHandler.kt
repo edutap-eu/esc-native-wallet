@@ -13,6 +13,7 @@ import eu.eduTap.core.Card
 import eu.eduTap.core.EuStudentCard
 import eu.eduTap.core.card.PlatformSpecificCardHandler
 import eu.eduTap.core.util.scalePng
+import eu.eduTap.core.web.PlatformSpecificWebHandler
 import java.awt.Color
 import java.io.ByteArrayInputStream
 import java.nio.charset.Charset
@@ -44,6 +45,19 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
     val template = buildTemplate(studentCard.heroImage)
 
     return PKFileBasedSigningUtil().createSignedAndZippedPkPassArchive(pass, template, signingInfo)
+  }
+
+  fun generateSignedPassHttpResponse(studentCard: EuStudentCard): PlatformSpecificWebHandler.BasicHttpResponse {
+    val pass = generateSignedPass(studentCard)
+    return PlatformSpecificWebHandler.BasicHttpResponse(
+      statusCode = 200,
+      body = pass,
+      headers = mapOf(
+        "Content-Type" to "application/vnd.apple.pkpass",
+        "Content-Disposition" to "attachment; filename=\"${studentCard.escn}.pkpass\"",
+        "Content-Length" to pass.size.toString()
+      )
+    )
   }
 
   // TODO make pass not shareable
