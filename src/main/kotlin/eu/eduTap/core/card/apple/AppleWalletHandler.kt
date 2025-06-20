@@ -15,14 +15,13 @@ import eu.eduTap.core.card.PlatformSpecificCardHandler
 import eu.eduTap.core.util.scalePng
 import eu.eduTap.core.web.PlatformSpecificWebHandler
 import java.awt.Color
-import java.io.ByteArrayInputStream
 import java.nio.charset.Charset
 import java.security.SecureRandom
 
 class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHandler() {
-  private inner class PreScaledImage(val baseImage: ByteArrayInputStream, val nativeWidthBound: Int, val nativeHeightBound: Int) {
+  private inner class PreScaledImage(val baseImage: ByteArray, val nativeWidthBound: Int, val nativeHeightBound: Int) {
     private fun scaleToFactor(factor: Int) = scalePng(
-      originalStream = baseImage, targetWidth = nativeWidthBound * factor, targetHeight = nativeHeightBound * factor
+      originalImage = baseImage, targetWidth = nativeWidthBound * factor, targetHeight = nativeHeightBound * factor
     )
 
     val sdImage = scaleToFactor(factor = 1) // *.png
@@ -37,8 +36,8 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
   ) ?: throw IllegalArgumentException("Failed to load signing information from passCert and wwdrCert.")
 
 
-  private val icon = PreScaledImage(config.icon.toByteArrayInputStream(), nativeWidthBound = 29, nativeHeightBound = 29)
-  private val logo = PreScaledImage(config.logo.toByteArrayInputStream(), nativeWidthBound = 160, nativeHeightBound = 50)
+  private val icon = PreScaledImage(config.icon, nativeWidthBound = 29, nativeHeightBound = 29)
+  private val logo = PreScaledImage(config.logo, nativeWidthBound = 160, nativeHeightBound = 50)
 
   fun generateSignedPass(studentCard: EuStudentCard): ByteArray {
     val pass = buildPass(studentCard)
@@ -120,7 +119,7 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
     }.build()
   }
 
-  private fun buildTemplate(heroImage: ByteArrayInputStream?) = PKPassTemplateInMemory().apply {
+  private fun buildTemplate(heroImage: ByteArray?) = PKPassTemplateInMemory().apply {
     addFile(PKPassTemplateInMemory.PK_ICON, icon.sdImage)
     addFile(PKPassTemplateInMemory.PK_ICON_RETINA, icon.retinaImage)
     addFile(PKPassTemplateInMemory.PK_ICON_RETINAHD, icon.retinaHdImage)

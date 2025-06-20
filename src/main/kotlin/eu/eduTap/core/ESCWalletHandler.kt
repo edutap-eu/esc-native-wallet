@@ -6,6 +6,7 @@ import eu.eduTap.core.push.apple.APNHandler
 import eu.eduTap.core.storage.apple.ApplePassStorageHandler
 import eu.eduTap.core.web.AppleWalletWebServiceHandler
 import eu.eduTap.core.web.GoogleWalletWebServiceHandler
+import eu.eduTap.core.web.PlatformSpecificWebHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
@@ -33,7 +34,9 @@ open class ESCWalletHandler(val config: WalletHandlerConfig) {
 
   open fun getAppleWalletPass(studentCard: EuStudentCard): ByteArray = appleWalletHandler.generateSignedPass(studentCard)
 
-  fun getAppleWalletPassResponse(studentCard: EuStudentCard) = appleWalletHandler.generateSignedPassHttpResponse(studentCard)
+  open fun getAppleWalletPassResponse(studentCard: EuStudentCard): PlatformSpecificWebHandler.BasicHttpResponse {
+    return appleWalletHandler.generateSignedPassHttpResponse(studentCard)
+  }
 
   fun getAppleWalletWebServiceHandler(storageHandler: ApplePassStorageHandler): AppleWalletWebServiceHandler {
     require(config.appleWalletConfig != null) { "Apple Wallet is not configured." }

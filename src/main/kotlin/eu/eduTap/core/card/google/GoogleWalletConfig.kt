@@ -1,7 +1,5 @@
 package eu.eduTap.core.card.google
 
-import java.io.ByteArrayInputStream
-
 class GoogleWalletConfig(
   /**
    * The issuer ID for the Google Wallet API.
@@ -24,9 +22,9 @@ class GoogleWalletConfig(
      */
     val webServiceUrl: String,
 
-    val icon: ByteArrayInputStream,
+    val icon: ByteArray,
 
-    val logo: ByteArrayInputStream,
+    val logo: ByteArray,
   ) {
     init {
       require(webServiceUrl.startsWith("https://")) {

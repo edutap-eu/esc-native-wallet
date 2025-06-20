@@ -1,7 +1,5 @@
 package eu.eduTap.core
 
-import java.io.ByteArrayInputStream
-
 interface Card {
   val appleWalletPassSerialNumber: String
   val googleWalletObjectId: String
@@ -50,5 +48,5 @@ interface EuStudentCard : Card {
    * It is recommended to use a square image with a size of 512x512 pixels. If the image is not square, it will be cropped to fit.
    * If it's null, no image will be displayed.
    */
-  val heroImage: ByteArrayInputStream?
+  val heroImage: ByteArray?
 }
