@@ -113,17 +113,7 @@ class AppleWalletWebServiceHandler(
 
     val esc = storageHandler.getStudentCard(serialNumber) ?: throw IllegalStateException("Student card not found")
 
-    val passData = walletHandler.generateSignedPass(esc)
-
-    return BasicHttpResponse(
-      statusCode = 200,
-      body = passData,
-      headers = mapOf(
-        "Content-Type" to "application/vnd.apple.pkpass",
-        "Content-Disposition" to "attachment; filename=\"${esc.escn}.pkpass\"",
-        "Content-Length" to passData.size.toString(),
-      ),
-    )
+    return walletHandler.generateSignedPassHttpResponse(esc)
   }
 
   /**

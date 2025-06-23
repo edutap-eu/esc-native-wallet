@@ -14,12 +14,9 @@ import kotlin.math.roundToInt
  * * When both are given, the image is shrunk until **both** sides fit.
  * * Upscaling is disabled by default; pass `allowUpscale = true` if you really
  *   want to enlarge smaller images.
- *
- * The caller‑supplied [originalStream] is consumed. Use a
- * `ByteArrayInputStream` if you need to reuse the bytes afterwards.
  */
 internal fun scalePng(
-  originalStream: ByteArrayInputStream,
+  originalImage: ByteArray,
   targetWidth: Int? = null,
   targetHeight: Int? = null,
   allowUpscale: Boolean = false,
@@ -29,7 +26,8 @@ internal fun scalePng(
   /*───────────────────────────────────────────────────────────────────────*/
   /* 1 ▏Load source + dimensions                                          */
   /*───────────────────────────────────────────────────────────────────────*/
-  val original: BufferedImage = ImageIO.read(originalStream)
+  val original: BufferedImage = ImageIO.read(originalImage.inputStream())
+
   val origW = original.width
   val origH = original.height
 

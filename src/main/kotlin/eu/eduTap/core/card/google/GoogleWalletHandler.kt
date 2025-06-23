@@ -8,11 +8,9 @@ import com.google.auth.oauth2.ServiceAccountCredentials
 import eu.eduTap.core.EuStudentCard
 import eu.eduTap.core.card.PlatformSpecificCardHandler
 import eu.eduTap.core.util.LocalizedString
-import eu.eduTap.core.web.GoogleWalletWebServiceHandler
-import java.io.ByteArrayInputStream
 import java.security.interfaces.RSAPrivateKey
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 class GoogleWalletHandler(val config: GoogleWalletConfig) : PlatformSpecificCardHandler() {
   private val fullClassId = "${config.issuerId}.${config.classIdSuffix}"
@@ -102,7 +100,7 @@ class GoogleWalletHandler(val config: GoogleWalletConfig) : PlatformSpecificCard
     this.body = body
   }
 
-  inner class ImageResource(val name: String, val imageData: ByteArrayInputStream, val targetWidth: Int, val targetHeight: Int) {
+  inner class ImageResource(val name: String, val imageData: ByteArray, val targetWidth: Int, val targetHeight: Int) {
     val fullUrl get() = config.webServiceConfig.webServiceUrl.removeSuffix("/") + "/" + name
   }
 

@@ -13,15 +13,15 @@ import eu.eduTap.core.Card
 import eu.eduTap.core.EuStudentCard
 import eu.eduTap.core.card.PlatformSpecificCardHandler
 import eu.eduTap.core.util.scalePng
+import eu.eduTap.core.web.PlatformSpecificWebHandler
 import java.awt.Color
-import java.io.ByteArrayInputStream
 import java.nio.charset.Charset
 import java.security.SecureRandom
 
 class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHandler() {
-  private inner class PreScaledImage(val baseImage: ByteArrayInputStream, val nativeWidthBound: Int, val nativeHeightBound: Int) {
+  private inner class PreScaledImage(val baseImage: ByteArray, val nativeWidthBound: Int, val nativeHeightBound: Int) {
     private fun scaleToFactor(factor: Int) = scalePng(
-      originalStream = baseImage, targetWidth = nativeWidthBound * factor, targetHeight = nativeHeightBound * factor
+      originalImage = baseImage, targetWidth = nativeWidthBound * factor, targetHeight = nativeHeightBound * factor
     )
 
     val sdImage = scaleToFactor(factor = 1) // *.png
@@ -36,14 +36,27 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
   ) ?: throw IllegalArgumentException("Failed to load signing information from passCert and wwdrCert.")
 
 
-  private val icon = PreScaledImage(config.icon.toByteArrayInputStream(), nativeWidthBound = 29, nativeHeightBound = 29)
-  private val logo = PreScaledImage(config.logo.toByteArrayInputStream(), nativeWidthBound = 160, nativeHeightBound = 50)
+  private val icon = PreScaledImage(config.icon, nativeWidthBound = 29, nativeHeightBound = 29)
+  private val logo = PreScaledImage(config.logo, nativeWidthBound = 160, nativeHeightBound = 50)
 
   fun generateSignedPass(studentCard: EuStudentCard): ByteArray {
     val pass = buildPass(studentCard)
     val template = buildTemplate(studentCard.heroImage)
 
     return PKFileBasedSigningUtil().createSignedAndZippedPkPassArchive(pass, template, signingInfo)
+  }
+
+  fun generateSignedPassHttpResponse(studentCard: EuStudentCard): PlatformSpecificWebHandler.BasicHttpResponse {
+    val pass = generateSignedPass(studentCard)
+    return PlatformSpecificWebHandler.BasicHttpResponse(
+      statusCode = 200,
+      body = pass,
+      headers = mapOf(
+        "Content-Type" to "application/vnd.apple.pkpass",
+        "Content-Disposition" to "attachment; filename=\"${studentCard.escn}.pkpass\"",
+        "Content-Length" to pass.size.toString()
+      )
+    )
   }
 
   // TODO make pass not shareable
@@ -106,7 +119,7 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
     }.build()
   }
 
-  private fun buildTemplate(heroImage: ByteArrayInputStream?) = PKPassTemplateInMemory().apply {
+  private fun buildTemplate(heroImage: ByteArray?) = PKPassTemplateInMemory().apply {
     addFile(PKPassTemplateInMemory.PK_ICON, icon.sdImage)
     addFile(PKPassTemplateInMemory.PK_ICON_RETINA, icon.retinaImage)
     addFile(PKPassTemplateInMemory.PK_ICON_RETINAHD, icon.retinaHdImage)

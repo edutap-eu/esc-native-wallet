@@ -35,9 +35,9 @@ class AppleWalletConfig(
    */
   val wwdrCert: ByteArrayInputStream,
 
-  val icon: ByteArrayInputStream,
+  val icon: ByteArray,
 
-  val logo: ByteArrayInputStream,
+  val logo: ByteArray,
 
   val webServiceConfig: WebServiceConfig? = null,
   val pushServiceConfig: PushServiceConfig? = null,
