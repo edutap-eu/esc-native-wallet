@@ -10,7 +10,6 @@ import io.ktor.http.*
  *      - For countries with a nation wide scope student ID PREFIX:CN:STUDENTCODE
  *      - For countries with a HEI wide scope student ID PREFIX:SchacHomeOrganization:STUDENTCODE
  *    CN - Country code of the institution (ISO 3166-1 norm)
- *    PIC - Participation Identification Code of the insitution where the student is enrolled
  *    PREFIX - urn:schac:personalUniqueCode:int:esi
  *    SchacHomeOrganization is the domain of the Higher Education Institution
  *    STUDENTCODE - Student unique code in the HEI where he is enrolled. If the country have national/regional identity code, this code will be national/regional wide, otherwise it will be the home institution own identifier.
