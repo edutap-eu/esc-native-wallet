@@ -5,6 +5,16 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
+/***
+ * ESI Format:
+ *      - For countries with a nation wide scope student ID PREFIX:CN:STUDENTCODE
+ *      - For countries with a HEI wide scope student ID PREFIX:SchacHomeOrganization:STUDENTCODE
+ *    CN - Country code of the institution (ISO 3166-1 norm)
+ *    PIC - Participation Identification Code of the insitution where the student is enrolled
+ *    PREFIX - urn:schac:personalUniqueCode:int:esi
+ *    SchacHomeOrganization is the domain of the Higher Education Institution
+ *    STUDENTCODE - Student unique code in the HEI where he is enrolled. If the country have national/regional identity code, this code will be national/regional wide, otherwise it will be the home institution own identifier.
+ */
 class PersonsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, apiUrl) {
   private val personApiUrl = "${apiUrl}persons"
 
@@ -13,8 +23,8 @@ class PersonsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, ap
   }
 
   suspend fun create(
-    fullName: String,
     esi: String,
+    fullName: String,
     organisationIdentifier: String,
     academicLevel: AcademicLevel? = null,
     email: String? = null,
@@ -46,8 +56,8 @@ class PersonsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, ap
   }
 
   suspend fun update(
-    fullName: String,
     esi: String,
+    fullName: String,
     organisationIdentifier: String,
     academicLevel: AcademicLevel? = null,
     email: String? = null,

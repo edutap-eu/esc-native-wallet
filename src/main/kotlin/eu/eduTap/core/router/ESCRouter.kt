@@ -15,6 +15,10 @@ import io.ktor.serialization.kotlinx.json.*
  *
  * In case of an API error, it throws an [ESCRouterApiException] with the status code and error message.
  *
+ * Links to the API documentation:
+ * - Router: https://router.europeanstudentcard.eu/esc-rest/swagger-ui/index.html
+ * - Sandbox: https://sandbox.europeanstudentcard.eu/esc-rest/swagger-ui/index.html
+ *
  * @param apiToken The API token used for Bearer authentication.
  * @param baseUrl The base URL of the ESC Router API (default: https://router.europeanstudentcard.eu/, sandbox: https://sandbox.europeanstudentcard.eu/).
  */

@@ -76,13 +76,13 @@ enum class CardStatusType {
 }
 
 enum class CardType {
-  UNKNOWN,
-  PASSIVE,
-  SMART_NO_CDZ,
-  SMART_CDZ,
-  SMART_MAY_SP,
-  SMART_PASSIVE,
-  SMART_PASSIVE_EMULATION,
+  UNKNOWN, // Unknown / None
+  PASSIVE, // Physical passive card, with no electronic component
+  SMART_NO_CDZ, // Physical smart card, without ESC data zone
+  SMART_CDZ, // Physical smart card, with ESC data zone
+  SMART_MAY_SP, // Physical smart card, with custom data by service providers
+  SMART_PASSIVE, // Digital passive card, with no electronic component
+  SMART_PASSIVE_EMULATION, // Digital smart card, with physical card emulation
 }
 
 enum class QrCodeOrientation {

@@ -92,6 +92,9 @@ class CardsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, apiU
     }
   }
 
+  /**
+   * Returns Base64 encoded QR code.
+   */
   suspend fun getQrCode(
     cardNumber: String,
     orientation: QrCodeOrientation? = null,
@@ -100,7 +103,7 @@ class CardsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, apiU
   ): String {
     return makeRequest {
       httpClient.get("${cardApiUrl}/$cardNumber/qr") {
-        accept(ContentType.Image.SVG)
+        accept(ContentType.Text.Plain)
 
         url {
           if (orientation != null) {
