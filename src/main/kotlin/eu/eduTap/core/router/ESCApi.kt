@@ -21,3 +21,6 @@ abstract class ESCApi(protected val httpClient: HttpClient, protected val apiUrl
     return response.body()
   }
 }
+
+class ESCRouterApiException(val statusCode: HttpStatusCode, val apiError: ApiErrorMessage) :
+  Exception("API Error: ${apiError.code} - ${apiError.message}")

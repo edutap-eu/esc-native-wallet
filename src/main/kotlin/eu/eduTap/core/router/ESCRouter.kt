@@ -4,7 +4,6 @@ import io.ktor.client.*
 import io.ktor.client.plugins.auth.*
 import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 
 /**
@@ -44,6 +43,3 @@ class ESCRouter(
   val persons = PersonsApi(httpClient, apiUrl)
   val cards = CardsApi(httpClient, apiUrl)
 }
-
-class ESCRouterApiException(val statusCode: HttpStatusCode, val apiError: ApiErrorMessage) :
-  Exception("API Error: ${apiError.code} - ${apiError.message}")
