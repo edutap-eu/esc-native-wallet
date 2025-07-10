@@ -53,7 +53,7 @@ suspend fun main() {
   val escRouter = ESCRouter(apiToken = "AT-OFV7hySg91SQ6t5GfKIM47qrj0JybT60", baseUrl = "https://sandbox.europeanstudentcard.eu/")
 
   val person = escRouter.persons.get(esi = "urn:schac:personalUniqueCode:int:esi:example.org:test")
-  val card = escRouter.cards.get(esi = "urn:schac:personalUniqueCode:int:esi:example.org:test")
+  val card = escRouter.cards.getByEsi(esi = "urn:schac:personalUniqueCode:int:esi:example.org:test")
 
   println(person)
   println(card)
@@ -80,7 +80,7 @@ suspend fun main() {
     email = "test1@example.org",
   )
 
-  val newCards = escRouter.cards.get(esi = newEsi)
+  val newCards = escRouter.cards.getByEsi(esi = newEsi)
   var newCard = newCards.firstOrNull()
 
   println(newCard)
@@ -110,13 +110,13 @@ suspend fun main() {
 
   println(newCard)
 
-  newCard = escRouter.cards.get(esi = newEsi).firstOrNull()!!
+  newCard = escRouter.cards.getByEsi(esi = newEsi).firstOrNull()!!
 
   println(newCard)
 
   escRouter.cards.delete(cardNumber = newCard.cardNumber)
 
-  newCard = escRouter.cards.get(esi = newEsi).firstOrNull()
+  newCard = escRouter.cards.getByEsi(esi = newEsi).firstOrNull()
   println(newCard)
 
   println(newPerson)

@@ -9,7 +9,7 @@ import java.time.LocalDate
 class CardsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, apiUrl) {
   private val cardApiUrl = "${apiUrl}cards"
 
-  suspend fun get(esi: String): List<Card> {
+  suspend fun getByEsi(esi: String): List<Card> {
     @Serializable
     data class GetCardsResponse(val content: List<CardLite>)
 
@@ -21,13 +21,15 @@ class CardsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, apiU
       }
     }
       .content
-      .map { cardLite ->
-        makeRequest<Card> {
-          httpClient.get("${cardApiUrl}/${cardLite.cardNumber}")
-        }
-      }
+      .map { getByCardNumber(it.cardNumber) }
 
     return cards
+  }
+
+  suspend fun getByCardNumber(cardNumber: String): Card {
+    return makeRequest {
+      httpClient.get("${cardApiUrl}/${cardNumber}")
+    }
   }
 
   suspend fun create(
