@@ -11,17 +11,23 @@ class CardsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, apiU
 
   suspend fun get(esi: String): List<Card> {
     @Serializable
-    data class GetCardsResponse(val content: List<Card>)
+    data class GetCardsResponse(val content: List<CardLite>)
 
     val cards = makeRequest<GetCardsResponse> {
       httpClient.get(cardApiUrl) {
         url {
-          parameters.append("search", "person.identifierCode:${esi}")
+          parameters.append("search", "person.identifierCode:ESI<+>person.identifier:${esi}")
         }
       }
     }
+      .content
+      .map { cardLite ->
+        makeRequest<Card> {
+          httpClient.get("${cardApiUrl}/${cardLite.cardNumber}")
+        }
+      }
 
-    return cards.content
+    return cards
   }
 
   suspend fun create(
