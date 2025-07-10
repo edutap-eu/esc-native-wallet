@@ -56,4 +56,32 @@ suspend fun main() {
 
   println(person)
   println(card)
+
+  var newPerson = escRouter.persons.get(esi = "urn:schac:personalUniqueCode:int:esi:example.org:test1")
+
+  if (newPerson == null) {
+    newPerson = escRouter.persons.create(
+      esi = "urn:schac:personalUniqueCode:int:esi:example.org:test1",
+      fullName = "Test Code",
+      organisationIdentifier = "999489456",
+    )
+  }
+
+  println(newPerson)
+
+  val updatedPerson = escRouter.persons.update(
+    esi = "urn:schac:personalUniqueCode:int:esi:example.org:test1",
+    fullName = "Test Code",
+    organisationIdentifier = "999489456",
+    academicLevel = AcademicLevel.BACHELOR,
+    email = "test1@example.org",
+  )
+
+  println(updatedPerson)
+
+  escRouter.persons.delete(esi = "urn:schac:personalUniqueCode:int:esi:example.org:test1")
+
+  newPerson = escRouter.persons.get(esi = "urn:schac:personalUniqueCode:int:esi:example.org:test1")
+
+  println(newPerson) // Should be null after deletion
 }

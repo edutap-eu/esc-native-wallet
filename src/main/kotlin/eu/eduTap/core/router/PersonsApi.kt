@@ -17,8 +17,16 @@ import io.ktor.http.*
 class PersonsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, apiUrl) {
   private val personApiUrl = "${apiUrl}persons"
 
-  suspend fun get(esi: String): Person {
-    return makeRequest { httpClient.get("${personApiUrl}/${esi}") }
+  suspend fun get(esi: String): Person? {
+    return try {
+      makeRequest { httpClient.get("${personApiUrl}/${esi}") }
+    } catch (e: ESCRouterApiException) {
+      if (e.statusCode == HttpStatusCode.NotFound) {
+        null
+      } else {
+        throw e
+      }
+    }
   }
 
   suspend fun create(
