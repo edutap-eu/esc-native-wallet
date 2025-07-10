@@ -106,6 +106,7 @@ suspend fun main() {
     processorIdentifier = "U76240104",
     issuedAt = LocalDate.now().minusWeeks(1),
     cardStatusType = CardStatusType.ACTIVE,
+    cardType = CardType.SMART_PASSIVE_EMULATION
   )
 
   println(newCard)
