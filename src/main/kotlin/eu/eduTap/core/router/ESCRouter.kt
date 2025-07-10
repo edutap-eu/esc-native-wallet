@@ -6,6 +6,7 @@ import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
+import java.time.LocalDate
 
 /**
  * ESCRouter is a client for interacting with the European Student Card (ESC) Router API.
@@ -57,11 +58,13 @@ suspend fun main() {
   println(person)
   println(card)
 
-  var newPerson = escRouter.persons.get(esi = "urn:schac:personalUniqueCode:int:esi:example.org:test1")
+  val newEsi = "urn:schac:personalUniqueCode:int:esi:example.org:test1"
+
+  var newPerson = escRouter.persons.get(esi = newEsi)
 
   if (newPerson == null) {
     newPerson = escRouter.persons.create(
-      esi = "urn:schac:personalUniqueCode:int:esi:example.org:test1",
+      esi = newEsi,
       fullName = "Test Code",
       organisationIdentifier = "999489456",
     )
@@ -69,19 +72,58 @@ suspend fun main() {
 
   println(newPerson)
 
-  val updatedPerson = escRouter.persons.update(
-    esi = "urn:schac:personalUniqueCode:int:esi:example.org:test1",
+  newPerson = escRouter.persons.update(
+    esi = newEsi,
     fullName = "Test Code",
     organisationIdentifier = "999489456",
     academicLevel = AcademicLevel.BACHELOR,
     email = "test1@example.org",
   )
 
-  println(updatedPerson)
+  val newCards = escRouter.cards.get(esi = newEsi)
+  var newCard = newCards.firstOrNull()
 
-  escRouter.persons.delete(esi = "urn:schac:personalUniqueCode:int:esi:example.org:test1")
+  println(newCard)
 
-  newPerson = escRouter.persons.get(esi = "urn:schac:personalUniqueCode:int:esi:example.org:test1")
+  if (newCard == null) {
+    newCard = escRouter.cards.create(
+      esi = newEsi,
+      displayName = newPerson.fullName,
+      expiresAt = LocalDate.now().plusWeeks(1),
+      issuerIdentifier = "999489456",
+      processorIdentifier = "U76240104",
+    )
+  }
+
+  println(newCard)
+
+  newCard = escRouter.cards.update(
+    cardNumber = newCard.cardNumber,
+    esi = newEsi,
+    displayName = newPerson.fullName,
+    expiresAt = LocalDate.now().plusWeeks(1),
+    issuerIdentifier = "999489456",
+    processorIdentifier = "U76240104",
+    issuedAt = LocalDate.now().minusWeeks(1),
+    cardStatusType = CardStatusType.ACTIVE,
+  )
+
+  println(newCard)
+
+  newCard = escRouter.cards.get(esi = newEsi).firstOrNull()!!
+
+  println(newCard)
+
+  escRouter.cards.delete(cardNumber = newCard.cardNumber)
+
+  newCard = escRouter.cards.get(esi = newEsi).firstOrNull()
+  println(newCard)
+
+  println(newPerson)
+
+  escRouter.persons.delete(esi = newEsi)
+
+  newPerson = escRouter.persons.get(esi = newEsi)
 
   println(newPerson) // Should be null after deletion
 }
