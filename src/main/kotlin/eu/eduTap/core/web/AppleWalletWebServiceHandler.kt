@@ -2,6 +2,12 @@ package eu.eduTap.core.web
 
 import eu.eduTap.core.card.apple.AppleWalletHandler
 import eu.eduTap.core.storage.apple.ApplePassStorageHandler
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.*
 
 class AppleWalletWebServiceHandler(
   private val walletHandler: AppleWalletHandler,
@@ -76,7 +82,7 @@ class AppleWalletWebServiceHandler(
   fun listUpdatablePasses(
     deviceLibraryIdentifier: String,
     passTypeIdentifier: String,
-    previousLastUpdated: String, // TODO use this
+    previousLastUpdated: String?, // TODO test this with push notifications
   ): BasicHttpResponse {
     fun noMatchingPasses() = BasicHttpResponse(statusCode = 204)
 
@@ -84,12 +90,24 @@ class AppleWalletWebServiceHandler(
 
     val passes = storageHandler.getRegisteredPassesForDevice(deviceLibraryIdentifier)
       .filter { it.passTypeIdentifier == passTypeIdentifier }
+      .filter {
+        if (previousLastUpdated == null) {
+          true
+        } else {
+          val previousLastUpdatedDate = OffsetDateTime
+            .parse(previousLastUpdated, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+            .toInstant()
+            .atSecondResolution()
+
+          it.lastUpdatedDate.atSecondResolution() > previousLastUpdatedDate
+        }
+      }
 
     return BasicHttpResponse(
       statusCode = 200,
       body = mapOf(
         "serialNumbers" to passes.map { it.serialNumber },
-        "lastUpdated" to previousLastUpdated,
+        "lastUpdated" to (previousLastUpdated ?: Date().getRfc1123DateTime()),
       )
     )
   }
@@ -103,6 +121,7 @@ class AppleWalletWebServiceHandler(
     passTypeIdentifier: String,
     serialNumber: String,
     authenticationToken: String,
+    modifiedSince: Date?, // from the request header "If-Modified-Since"
   ): BasicHttpResponse {
     val pass = storageHandler.getRegisteredPass(
       passTypeIdentifier = passTypeIdentifier,
@@ -113,7 +132,17 @@ class AppleWalletWebServiceHandler(
 
     val esc = storageHandler.getStudentCard(serialNumber) ?: throw IllegalStateException("Student card not found")
 
-    return walletHandler.generateSignedPassHttpResponse(esc)
+    if (modifiedSince != null && pass.lastUpdatedDate.atSecondResolution() <= modifiedSince.atSecondResolution()) {
+      // Not specifically mentioned in the docs, but apple logs an error to /log endpoint if we return a non modified pass
+      return BasicHttpResponse(statusCode = 304) // Not Modified
+    }
+
+    return walletHandler.generateSignedPassHttpResponse(
+      esc,
+      additionalHeaders = mapOf(
+        "Last-Modified" to pass.lastUpdatedDate.getRfc1123DateTime()
+      )
+    )
   }
 
   /**
@@ -142,4 +171,11 @@ class AppleWalletWebServiceHandler(
       }
     }
   }
+
+  private fun Date.getRfc1123DateTime(): String {
+    return DateTimeFormatter.RFC_1123_DATE_TIME.withZone(ZoneOffset.UTC).format(this.toInstant())
+  }
+
+  private fun Instant.atSecondResolution(): Instant = truncatedTo(ChronoUnit.SECONDS)
+  private fun Date.atSecondResolution(): Instant = toInstant().truncatedTo(ChronoUnit.SECONDS)
 }
