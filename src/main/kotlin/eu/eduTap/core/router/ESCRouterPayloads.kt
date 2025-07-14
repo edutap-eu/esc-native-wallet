@@ -6,15 +6,16 @@ import kotlinx.serialization.Serializable
 data class Person(
   val fullName: String,
   val identifier: String,
-  val identifierCode: KeyValue?,
+  val identifierCode: KeyLabel?,
   val organisationCount: Int,
-)
+) {
+  @Serializable
+  data class KeyLabel(
+    val key: String,
+    val label: String,
+  )
+}
 
-@Serializable
-data class KeyValue(
-  val key: String,
-  val value: String,
-)
 
 @Serializable
 data class PersonUpdate(
@@ -42,8 +43,8 @@ enum class AcademicLevel {
 @Serializable
 data class Card(
   val cardNumber: String,
-  val cardStatusType: KeyValue,
-  val cardType: KeyValue,
+  val cardStatusType: KeyLabel<CardStatusType>,
+  val cardType: KeyLabel<CardType>,
   val displayName: String,
   val expiresAt: String,
   val hasOwnerAuthorization: Boolean,
@@ -51,11 +52,27 @@ data class Card(
   val person: CardPerson,
 ) {
   @Serializable
-  data class CardPerson(
-    val fullName: String,
-    val identifier: String,
+  data class KeyLabel<T>(
+    val key: T,
+    val label: String,
   )
 }
+
+@Serializable
+data class CardLite(
+  val cardNumber: String,
+  val displayName: String,
+  val expiresAt: String,
+  val hasOwnerAuthorization: Boolean,
+  val issuedAt: String,
+  val person: CardPerson,
+)
+
+@Serializable
+data class CardPerson(
+  val fullName: String,
+  val identifier: String,
+)
 
 @Serializable
 data class CardUpdate(
