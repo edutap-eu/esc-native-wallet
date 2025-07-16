@@ -5,6 +5,8 @@ import io.ktor.client.plugins.auth.*
 import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
+import java.time.LocalDate
 
 /**
  * ESCRouter is a client for interacting with the European Student Card (ESC) Router API.
@@ -36,7 +38,9 @@ class ESCRouter(
       }
     }
     install(ContentNegotiation) {
-      json()
+      json(Json {
+        ignoreUnknownKeys = true
+      })
     }
   }
 

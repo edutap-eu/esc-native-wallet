@@ -52,6 +52,8 @@ open class ESCWalletHandler(val config: WalletHandlerConfig) {
 
   open fun getGoogleWalletPassJwt(studentCard: EuStudentCard): String = googleWalletHandler.getSignedJWTPass(studentCard)
 
+  open fun getGoogleWalletAddUrl(studentCard: EuStudentCard): String = googleWalletHandler.getAddToWalletUrl(studentCard)
+
   suspend fun notifyAllCardHolders(card: Card) {
     appleWalletPushHandler?.notifyAllCardHolders(card)
   }
