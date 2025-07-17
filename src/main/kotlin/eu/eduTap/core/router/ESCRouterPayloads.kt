@@ -8,14 +8,13 @@ data class Person(
   val identifier: String,
   val identifierCode: KeyLabel?,
   val organisationCount: Int,
-) {
-  @Serializable
-  data class KeyLabel(
-    val key: String,
-    val label: String,
-  )
-}
+)
 
+@Serializable
+data class KeyLabel(
+  val key: String,
+  val label: String,
+)
 
 @Serializable
 data class PersonUpdate(
@@ -43,18 +42,31 @@ enum class AcademicLevel {
 @Serializable
 data class Card(
   val cardNumber: String,
-  val cardStatusType: KeyLabel<CardStatusType>,
-  val cardType: KeyLabel<CardType>,
+  val cardStatusType: TypedKeyLabel<CardStatusType>,
+  val cardType: TypedKeyLabel<CardType>,
   val displayName: String,
   val expiresAt: String,
   val hasOwnerAuthorization: Boolean,
   val issuedAt: String,
   val person: CardPerson,
+  val issuer: Issuer,
 ) {
   @Serializable
-  data class KeyLabel<T>(
+  data class TypedKeyLabel<T>(
     val key: T,
     val label: String,
+  )
+
+  @Serializable
+  data class Issuer(
+    val fullLabel: String,
+    val id: Int,
+    val identifier: String,
+    val name: String,
+    val organisationType: KeyLabel,
+    val schacHomeOrganization: String,
+    val status: KeyLabel,
+    val website: String,
   )
 }
 
