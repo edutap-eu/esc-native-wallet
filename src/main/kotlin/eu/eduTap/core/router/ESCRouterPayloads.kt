@@ -59,30 +59,15 @@ data class Card(
 
   @Serializable
   data class Issuer(
-    val address: Address,
-    val contractColor: String,
     val fullLabel: String,
     val id: Int,
     val identifier: String,
-    val identifierKode: KeyLabel,
-    val mainColor: String,
     val name: String,
-    val newLogoAt: String,
     val organisationType: KeyLabel,
     val schacHomeOrganization: String,
-    val secondaryColor: String,
     val status: KeyLabel,
     val website: String,
-  ) {
-    @Serializable
-    data class Address(
-      val addressName: String,
-      val cityName: String,
-      val country: String,
-      val streetName: String,
-      val subdivisionCode: String,
-    )
-  }
+  )
 }
 
 @Serializable
