@@ -102,6 +102,7 @@ data class CardUpdate(
 enum class CardStatusType {
   ACTIVE,
   INACTIVE,
+  EXPIRED,
 }
 
 enum class CardType {
