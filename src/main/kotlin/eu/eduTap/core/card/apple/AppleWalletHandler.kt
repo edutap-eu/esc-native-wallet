@@ -93,9 +93,8 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
           .backFields(
             listOfNotNull(
               pkField("escn", "ESCN", studentCard.escn),
-              // Don't show on back if ESI is already shown on front, because apple treats this as invalid pass data since it has duplicated
-              // fields (currently just a warning, but will be treated as an error in the future release)
-              if (studentCard.dateOfBirth != null) pkField("esi", "ESI", studentCard.esi) else null,
+              // Cannot have same key ("esi") on back and front because apple treats this as invalid pass data since it has duplicated fields
+              pkField("esi-back", "ESI", studentCard.esi),
             ).plus(studentCard.additionalFields.map { pkField(it.key.lowercase(), it.key, it.value) })
           )
       )
