@@ -46,7 +46,10 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
     return PKFileBasedSigningUtil().createSignedAndZippedPkPassArchive(pass, template, signingInfo)
   }
 
-  fun generateSignedPassHttpResponse(studentCard: EuStudentCard): PlatformSpecificWebHandler.BasicHttpResponse {
+  fun generateSignedPassHttpResponse(
+    studentCard: EuStudentCard,
+    additionalHeaders: Map<String, String> = emptyMap(),
+  ): PlatformSpecificWebHandler.BasicHttpResponse {
     val pass = generateSignedPass(studentCard)
     return PlatformSpecificWebHandler.BasicHttpResponse(
       statusCode = 200,
@@ -55,7 +58,7 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
         "Content-Type" to "application/vnd.apple.pkpass",
         "Content-Disposition" to "attachment; filename=\"${studentCard.escn}.pkpass\"",
         "Content-Length" to pass.size.toString()
-      )
+      ) + additionalHeaders
     )
   }
 
@@ -90,7 +93,8 @@ class AppleWalletHandler(val config: AppleWalletConfig) : PlatformSpecificCardHa
           .backFields(
             listOfNotNull(
               pkField("escn", "ESCN", studentCard.escn),
-              pkField("esi", "ESI", studentCard.esi),
+              // Cannot have same key ("esi") on back and front because apple treats this as invalid pass data since it has duplicated fields
+              pkField("esi-back", "ESI", studentCard.esi),
             ).plus(studentCard.additionalFields.map { pkField(it.key.lowercase(), it.key, it.value) })
           )
       )
