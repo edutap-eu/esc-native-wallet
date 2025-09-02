@@ -81,7 +81,7 @@ data class CardLite(
 )
 
 @Serializable
-data class CardVerified(
+data class CardVerificationDetails(
   val cardNumber: String,
   val cardType: Card.TypedKeyLabel<CardType>,
   val cardStatusType: Card.TypedKeyLabel<CardStatusType>,
