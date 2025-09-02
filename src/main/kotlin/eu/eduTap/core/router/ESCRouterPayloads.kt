@@ -81,6 +81,21 @@ data class CardLite(
 )
 
 @Serializable
+data class CardVerified(
+  val cardNumber: String,
+  val cardType: Card.TypedKeyLabel<CardType>,
+  val cardStatusType: Card.TypedKeyLabel<CardStatusType>,
+  val expiresAt: String,
+  val issuer: Issuer,
+) {
+  @Serializable
+  data class Issuer(
+    val identifier: String,
+    val name: String,
+  )
+}
+
+@Serializable
 data class CardPerson(
   val fullName: String,
   val identifier: String,
