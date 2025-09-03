@@ -6,7 +6,6 @@ import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import java.time.LocalDate
 
 /**
  * ESCRouter is a client for interacting with the European Student Card (ESC) Router API.
@@ -27,16 +26,10 @@ class ESCRouter(
   apiToken: String,
   baseUrl: String = "https://router.europeanstudentcard.eu/",
 ) {
-  private val apiUrl = "${baseUrl}esc-rest/api/v2/"
+  private val escRestApiUrl = "${baseUrl}esc-rest/api/v2/"
+  private val verifyServiceUrl = "${baseUrl}esc-verifier-service/api/v1/"
 
   private val httpClient = HttpClient {
-    install(Auth) {
-      bearer {
-        loadTokens {
-          BearerTokens(accessToken = apiToken, refreshToken = null)
-        }
-      }
-    }
     install(ContentNegotiation) {
       json(Json {
         ignoreUnknownKeys = true
@@ -44,6 +37,17 @@ class ESCRouter(
     }
   }
 
-  val persons = PersonsApi(httpClient, apiUrl)
-  val cards = CardsApi(httpClient, apiUrl)
+  private val authenticatedHttpClient = httpClient.config {
+    install(Auth) {
+      bearer {
+        loadTokens {
+          BearerTokens(accessToken = apiToken, refreshToken = null)
+        }
+      }
+    }
+  }
+
+  val persons = PersonsApi(authenticatedHttpClient, escRestApiUrl)
+  val cards = CardsApi(authenticatedHttpClient, escRestApiUrl)
+  val verify = VerifyApi(httpClient, verifyServiceUrl)
 }

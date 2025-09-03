@@ -2,7 +2,7 @@
 
 ### Local development with maven
 
-Compile the porject and publish it to your local maven repository:
+Compile the project and publish it to your local maven repository:
 
 ```bash
 ./gradlew publishToMavenLoca
