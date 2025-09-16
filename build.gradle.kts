@@ -28,7 +28,6 @@ spotless {
        */
       """.trimIndent()
     )
-    ktfmt()
   }
   java {
     target("**/*.java")
@@ -40,7 +39,6 @@ spotless {
        */
       """.trimIndent()
     )
-    googleJavaFormat()
   }
 }
 
