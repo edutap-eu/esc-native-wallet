@@ -2,6 +2,7 @@ plugins {
   kotlin("jvm") version "2.1.0"
   `maven-publish`
   kotlin("plugin.serialization") version "2.1.0"
+  id("com.diffplug.spotless") version "7.0.0"
 }
 
 group = "eu.eduTap.core"
@@ -14,6 +15,33 @@ repositories {
 java {
   withSourcesJar()
   withJavadocJar()
+}
+
+spotless {
+  kotlin {
+    target("**/*.kt")
+    licenseHeader(
+      """
+      /* 
+       * Copyright (c) 2025 Student & Campus Services GmbH
+       * SPDX-License-Identifier: AGPL-3.0-or-later
+       */
+      """.trimIndent()
+    )
+    ktfmt()
+  }
+  java {
+    target("**/*.java")
+    licenseHeader(
+      """
+      /* 
+       * Copyright (c) 2025 Student & Campus Services GmbH
+       * SPDX-License-Identifier: AGPL-3.0-or-later
+       */
+      """.trimIndent()
+    )
+    googleJavaFormat()
+  }
 }
 
 val ktor_version = "3.1.3"
