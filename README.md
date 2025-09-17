@@ -1,6 +1,7 @@
 # esc-native-wallet
 
 Kotlin library for the **European Student Card (ESC)** stack:
+
 - **ESC Router** client (HTTP API) for issuing & verifying ESC data.
 - **Wallet passes**: generate **Apple Wallet** and **Google Wallet** passes for student IDs.
 
@@ -10,7 +11,9 @@ Works with Kotlin/JVM projects (Ktor, Spring) and Java apps via standard interop
 
 ## Why
 
-Integrating with the **ESC Router** and pushing student IDs into **Apple/Google Wallet** is fiddly and easy to get wrong. `esc-native-wallet` provides a type-safe client, pass builders, and signing helpers so you can ship fast without reinventing the plumbing.
+Integrating with the **ESC Router** and pushing student IDs into **Apple/Google Wallet** is fiddly and easy to get
+wrong. `esc-native-wallet` provides a type-safe client, pass builders, and signing helpers so you can ship fast without
+reinventing the plumbing.
 
 ---
 
@@ -49,8 +52,7 @@ Integrating with the **ESC Router** and pushing student IDs into **Apple/Google 
 
 ## Status
 
-**Stable
-**: [![](https://jitpack.io/v/studoverse/esc-native-wallet.svg)](https://jitpack.io/#studoverse/esc-native-wallet)
+**Stable**: [![](https://jitpack.io/v/studoverse/esc-native-wallet.svg)](https://jitpack.io/#studoverse/esc-native-wallet)
 
 ---
 
@@ -71,17 +73,19 @@ then add the dependency:
 ```xml
 
 <dependency>
-  <groupId>eu.eduTap.core</groupId>
-  <artifactId>esc-native-wallet</artifactId>
-  <version>0.1-beta</version>
+    <groupId>eu.eduTap.core</groupId>
+    <artifactId>esc-native-wallet</artifactId>
+    <version>0.1-beta</version>
 </dependency>
 ```
+
 ---
 
 ## License
 
 **GNU Affero General Public License v3.0**.  
-If you modify and run this software over a network, you must make the complete corresponding source of your modified version available to users of that network service.
+If you modify and run this software over a network, you must make the complete corresponding source of your modified
+version available to users of that network service.
 
 Commercial licensing (to use without AGPL obligations) is available — contact **office@studo.com**.
 
