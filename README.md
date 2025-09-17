@@ -49,7 +49,7 @@ Integrating with the **ESC Router** and pushing student IDs into **Apple/Google 
 
 ## Status
 
-**Stable** internally; public `0.9.x` series prior to `1.0`.
+**Stable** from `1.0.0`.
 
 ---
 
