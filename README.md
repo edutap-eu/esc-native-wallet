@@ -49,7 +49,8 @@ Integrating with the **ESC Router** and pushing student IDs into **Apple/Google 
 
 ## Status
 
-**Stable** from `1.0.0`.
+**Stable
+**: [![](https://jitpack.io/v/studoverse/esc-native-wallet.svg)](https://jitpack.io/#studoverse/esc-native-wallet)
 
 ---
 
