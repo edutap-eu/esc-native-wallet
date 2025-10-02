@@ -54,6 +54,7 @@ data class Card(
   val issuedAt: String,
   val person: CardPerson,
   val issuer: Issuer,
+  val processor: Processor,
 ) {
   @Serializable
   data class TypedKeyLabel<T>(
@@ -64,7 +65,19 @@ data class Card(
   @Serializable
   data class Issuer(
     val fullLabel: String,
-    val id: Int,
+    val id: Long,
+    val identifier: String,
+    val name: String,
+    val organisationType: KeyLabel,
+    val schacHomeOrganization: String,
+    val status: KeyLabel,
+    val website: String,
+  )
+
+  @Serializable
+  data class Processor(
+    val fullLabel: String,
+    val id: Long,
     val identifier: String,
     val name: String,
     val organisationType: KeyLabel,
