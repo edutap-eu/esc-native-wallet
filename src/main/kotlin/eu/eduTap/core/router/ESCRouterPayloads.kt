@@ -69,9 +69,9 @@ data class Card(
     val identifier: String,
     val name: String,
     val organisationType: KeyLabel,
-    val schacHomeOrganization: String,
+    val schacHomeOrganization: String?,
     val status: KeyLabel,
-    val website: String,
+    val website: String?,
   )
 
   @Serializable
@@ -81,9 +81,9 @@ data class Card(
     val identifier: String,
     val name: String,
     val organisationType: KeyLabel,
-    val schacHomeOrganization: String,
+    val schacHomeOrganization: String?,
     val status: KeyLabel,
-    val website: String,
+    val website: String?,
   )
 }
 
