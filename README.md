@@ -56,6 +56,32 @@ reinventing the plumbing.
 
 ---
 
+## Usage
+
+### Install via Gradle
+Add JitPack repository to your `build.gradle.kts`:
+
+```kotlin
+repositories {
+    maven("https://jitpack.io")
+}
+```
+
+Add the dependency:
+
+```kotlin
+dependencies {
+    implementation("com.github.edutap-eu:esc-native-wallet:1.0.3")
+}
+```
+
+### Usage
+
+Create an `ESCWalletHandler` with your ESC Router config and Apple/Google credentials, then use it to issue
+and manage passes.
+
+---
+
 ## Contributing
 
 PRs welcome. For substantial changes, please open an issue to align on scope.
