@@ -64,6 +64,7 @@ dependencies {
   implementation("com.google.apis:google-api-services-walletobjects:v1-rev20250506-2.0.0")
 
   testImplementation(kotlin("test"))
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 }
 
 tasks.test {
