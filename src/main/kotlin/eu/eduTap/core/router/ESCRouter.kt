@@ -39,6 +39,7 @@ class ESCRouter(
         ignoreUnknownKeys = true
       })
     }
+    install(ContextLogger)
   }
 
   private val authenticatedHttpClient = httpClient.config {
