@@ -8,11 +8,31 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Person(
-  val fullName: String,
   val identifier: String,
   val identifierCode: KeyLabel?,
   val organisationCount: Int,
+  val organisations: List<PersonOrganisation>,
 )
+
+@Serializable
+data class PersonOrganisation(
+  val academicLevel: NullableKeyLabel?,
+  val fullName: String,
+  val hasPicture: Boolean,
+  val organisation: Organisation,
+) {
+  @Serializable
+  data class Organisation(
+    val fullLabel: String,
+    val id: Long,
+    val identifier: String,
+    val name: String,
+    val organisationType: KeyLabel,
+    val schacHomeOrganization: String?,
+    val status: KeyLabel,
+    val website: String?,
+  )
+}
 
 @Serializable
 data class KeyLabel(
@@ -21,19 +41,24 @@ data class KeyLabel(
 )
 
 @Serializable
+data class NullableKeyLabel(
+  val key: String?,
+  val label: String?,
+)
+
+
+@Serializable
 data class PersonUpdate(
-  val fullName: String,
   val identifier: String,
   val identifierCode: String?,
   val personOrganisationUpdateViews: List<PersonOrganisationUpdate>,
 ) {
   @Serializable
   data class PersonOrganisationUpdate(
+    val fullName: String,
     val academicLevel: AcademicLevel?,
     val email: String?,
-    val fax: String?,
     val organisationIdentifier: String,
-    val phone: String?,
   )
 }
 
@@ -114,8 +139,8 @@ data class CardVerificationDetails(
 
 @Serializable
 data class CardPerson(
-  val fullName: String,
   val identifier: String,
+  val organisations: List<PersonOrganisation>,
 )
 
 @Serializable

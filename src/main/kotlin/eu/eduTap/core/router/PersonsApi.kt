@@ -39,8 +39,6 @@ class PersonsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, ap
     organisationIdentifier: String,
     academicLevel: AcademicLevel? = null,
     email: String? = null,
-    phone: String? = null,
-    fax: String? = null,
   ): Person {
     return makeRequest {
       httpClient.post(personApiUrl) {
@@ -48,16 +46,14 @@ class PersonsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, ap
 
         setBody(
           PersonUpdate(
-            fullName = fullName,
             identifier = esi,
             identifierCode = "ESI",
             personOrganisationUpdateViews = listOf(
               PersonUpdate.PersonOrganisationUpdate(
+                fullName = fullName,
                 academicLevel = academicLevel,
                 email = email,
-                fax = fax,
                 organisationIdentifier = organisationIdentifier,
-                phone = phone,
               )
             )
           )
@@ -72,8 +68,6 @@ class PersonsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, ap
     organisationIdentifier: String,
     academicLevel: AcademicLevel? = null,
     email: String? = null,
-    phone: String? = null,
-    fax: String? = null,
   ): Person {
     return makeRequest {
       httpClient.put("${personApiUrl}/${esi}") {
@@ -81,16 +75,14 @@ class PersonsApi(httpClient: HttpClient, apiUrl: String) : ESCApi(httpClient, ap
 
         setBody(
           PersonUpdate(
-            fullName = fullName,
             identifier = esi,
             identifierCode = "ESI",
             personOrganisationUpdateViews = listOf(
               PersonUpdate.PersonOrganisationUpdate(
+                fullName = fullName,
                 academicLevel = academicLevel,
                 email = email,
-                fax = fax,
                 organisationIdentifier = organisationIdentifier,
-                phone = phone,
               )
             )
           )
