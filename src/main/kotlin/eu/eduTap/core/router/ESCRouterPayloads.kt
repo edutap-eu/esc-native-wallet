@@ -17,7 +17,7 @@ data class Person(
 @Serializable
 data class PersonOrganisation(
   val academicLevel: NullableKeyLabel?,
-  val fullName: String,
+  val fullName: String?,
   val hasPicture: Boolean,
   val organisation: Organisation,
 ) {
