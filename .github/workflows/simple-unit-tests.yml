@@ -19,13 +19,12 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
-          cache: gradle
 
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x gradlew
 
       - name: Build project
-        run: ./gradlew compileKotlin
+        run: ./gradlew --no-daemon jar
 
       - name: Run GoogleWalletHandler tests
-        run: ./gradlew test --tests 'eu.eduTap.core.card.google.GoogleWalletHandlerTest'
+        run: ./gradlew --no-daemon test --tests 'eu.eduTap.core.card.google.GoogleWalletHandlerTest'
