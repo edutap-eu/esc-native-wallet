@@ -52,7 +52,7 @@ reinventing the plumbing.
 
 ## Status
 
-**Stable**: [![](https://jitpack.io/v/studoverse/esc-native-wallet.svg)](https://jitpack.io/#studoverse/esc-native-wallet)
+**Stable**: [![](https://jitpack.io/v/edutap-eu/esc-native-wallet.svg)](https://jitpack.io/#edutap-eu/esc-native-wallet)
 
 ---
 
