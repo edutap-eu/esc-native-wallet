@@ -23,8 +23,41 @@ jobs:
       - name: Grant execute permission for Gradle wrapper
         run: chmod +x gradlew
 
+      - name: Check if files have the correct license headers
+        run: ./gradlew --no-daemon spotlessCheck
+
       - name: Build project
         run: ./gradlew --no-daemon jar
 
       - name: Run GoogleWalletHandler tests
         run: ./gradlew --no-daemon test --tests 'eu.eduTap.core.card.google.GoogleWalletHandlerTest'
+
+  escrouter-integration:
+      # Run on push; on PRs only if the PR comes from the same repo (trusted maintainers)
+      if: ${{ github.event_name == 'push' ||
+              (github.event_name == 'pull_request' &&
+               github.event.pull_request.head.repo.full_name == github.repository) }}
+      runs-on: self-hosted
+
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v4
+
+        - name: Set up JDK
+          uses: actions/setup-java@v4
+          with:
+            distribution: temurin
+            java-version: "21"
+
+        - name: Grant execute permission for Gradle wrapper
+          run: chmod +x gradlew
+
+        - name: Build project
+          run: ./gradlew --no-daemon jar
+
+        - name: Run ESCRouter tests
+          env:
+            ESC_ROUTER_TEST_API_TOKEN: ${{ secrets.ESC_ROUTER_TEST_API_TOKEN }}
+            ESC_ROUTER_TEST_ORGANISATION_IDENTIFIER: ${{ secrets.ESC_ROUTER_TEST_ORGANISATION_IDENTIFIER }}
+            ESC_ROUTER_TEST_PROCESSOR_IDENTIFIER: ${{ secrets.ESC_ROUTER_TEST_PROCESSOR_IDENTIFIER }}
+          run: ./gradlew --no-daemon test --tests 'eu.eduTap.core.router.ESCRouterTest'
