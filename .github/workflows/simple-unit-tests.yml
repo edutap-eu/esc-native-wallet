@@ -28,3 +28,10 @@ jobs:
 
       - name: Run GoogleWalletHandler tests
         run: ./gradlew --no-daemon test --tests 'eu.eduTap.core.card.google.GoogleWalletHandlerTest'
+
+      - name: Run ESCRouter tests
+        run: ./gradlew --no-daemon test --tests 'eu.eduTap.core.router.ESCRouterTest'
+        env:
+          ESC_ROUTER_TEST_API_TOKEN: ${{ secrets.ESC_ROUTER_TEST_API_TOKEN }}
+          ESC_ROUTER_TEST_ORGANISATION_IDENTIFIER: ${{ secrets.ESC_ROUTER_TEST_ORGANISATION_IDENTIFIER }}
+          ESC_ROUTER_TEST_PROCESSOR_IDENTIFIER: ${{ secrets.ESC_ROUTER_TEST_PROCESSOR_IDENTIFIER }}

@@ -14,15 +14,18 @@ import kotlin.test.assertNull
 
 class ESCRouterTest {
 
-  private val apiToken = System.getenv("ESC_ROUTER_API_TOKEN")?.takeIf { it.isNotBlank() }
-    ?: error("ESC_ROUTER_API_TOKEN environment variable not set")
-  private val testOrganisationIdentifier = System.getenv("ESC_TEST_ORGANISATION_IDENTIFIER")?.takeIf { it.isNotBlank() }
-    ?: error("ESC_TEST_ORGANISATION_IDENTIFIER environment variable not set")
-  private val testProcessorIdentifier = System.getenv("ESC_TEST_PROCESSOR_IDENTIFIER")?.takeIf { it.isNotBlank() }
-    ?: testOrganisationIdentifier
+  private val apiToken = System.getenv("ESC_ROUTER_TEST_API_TOKEN")?.takeIf { it.isNotBlank() }
+    ?: error("ESC_ROUTER_TEST_API_TOKEN environment variable not set")
+  private val testOrganisationIdentifier =
+    System.getenv("ESC_ROUTER_TEST_ORGANISATION_IDENTIFIER")?.takeIf { it.isNotBlank() }
+      ?: error("ESC_ROUTER_TEST_ORGANISATION_IDENTIFIER environment variable not set")
+  private val testProcessorIdentifier =
+    System.getenv("ESC_ROUTER_TEST_PROCESSOR_IDENTIFIER")?.takeIf { it.isNotBlank() }
 
   private val escRouter = ESCRouter(apiToken, "https://sandbox.europeanstudentcard.eu/")
 
+  @Suppress("unused")
+  /** Add as CoroutineContext to `runTest` to debug requests and responses */
   private val logger = object : LoggerContext() {
     override suspend fun logResponse(response: LoggerResponse) {
       println("${response.method} ${response.url} -> ${response.statusCode}")
@@ -36,7 +39,7 @@ class ESCRouterTest {
   }
 
   @Test
-  fun testCreateFlow() = runTest(logger) {
+  fun testCreateFlow() = runTest {
     val esi = randomESI()
 
     val cards = escRouter.cards.getByEsi(esi = esi)
