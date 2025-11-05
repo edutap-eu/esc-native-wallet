@@ -86,9 +86,11 @@ Use `ESCWalletHandler` with your Apple/Google Wallet credentials to generate wal
 ```kotlin
 val esc = object : EuStudentCard { /*...*/ }
 
-val walletHandler = ESCWalletHandler.fromConfigs(
-    appleWalletConfig = AppleWalletConfig(/*...*/),
-    googleWalletConfig = GoogleWalletConfig(/*...*/)
+val walletHandler = ESCWalletHandler(
+    config = WalletHandlerConfig(
+      appleWalletConfig = AppleWalletConfig(/*...*/),
+      googleWalletConfig = GoogleWalletConfig(/*...*/),
+    )
 )
 
 val applePass = walletHandler.getAppleWalletPassResponse(esc)
