@@ -47,7 +47,7 @@ val kotlinx_serialization_version: String = "1.8.0" // https://github.com/Kotlin
 
 dependencies {
   implementation(kotlin("stdlib"))
-  implementation("com.auth0:java-jwt:4.4.0")
+  implementation("com.auth0:java-jwt:4.6.1")
 
   // For network requests
   implementation("io.ktor:ktor-client-okhttp:$ktor_version")
