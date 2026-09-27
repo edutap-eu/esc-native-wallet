@@ -60,7 +60,7 @@ dependencies {
   implementation("de.brendamour:jpasskit:0.4.2")
 
   // Needed for Google API
-  implementation("com.google.firebase:firebase-admin:9.4.2")
+  implementation("com.google.firebase:firebase-admin:9.11.0")
   implementation("com.google.apis:google-api-services-walletobjects:v1-rev20250506-2.0.0")
 
   testImplementation(kotlin("test"))
