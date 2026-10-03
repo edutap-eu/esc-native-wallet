@@ -43,7 +43,7 @@ spotless {
 }
 
 val ktor_version = "3.1.3"
-val kotlinx_serialization_version: String = "1.8.0" // https://github.com/Kotlin/kotlinx.serialization/releases
+val kotlinx_serialization_version: String = "1.11.0" // https://github.com/Kotlin/kotlinx.serialization/releases
 
 dependencies {
   implementation(kotlin("stdlib"))
