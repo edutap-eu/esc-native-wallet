@@ -57,7 +57,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_serialization_version")
 
   // Needed for Apple Wallet
-  implementation("de.brendamour:jpasskit:0.4.2")
+  implementation("de.brendamour:jpasskit:0.5.9")
 
   // Needed for Google API
   implementation("com.google.firebase:firebase-admin:9.4.2")
